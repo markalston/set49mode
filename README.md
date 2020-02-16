@@ -15,7 +15,7 @@ work.
 Get them however is best for your distribution.
 If using GroovyArcade do the following:
 
-##Install Yay for aur repository installs
+## Install Yay for aur repository installs
     git clone https://aur.archlinux.org/yay.git
     cd yay
     makepkg -si
@@ -25,7 +25,7 @@ If using GroovyArcade do the following:
     yay -S perl-inline
     pacman -S libusb
 
-##The package contains several files
+## The package contains several files
 
 parse_controls.pl This program creates the needed ini file for the
                   set49mode program.  It requires mame_modes.ini, 
@@ -54,6 +54,8 @@ override.ini      An example override.ini file that should be customized.
 mame_modes.ini    The map file from mame modes to GPWIZ49 DRS Modes
               .   Probably shouldn't mess with this one.
 
+## Install
+
 To install copy gpwiz49.pm into your perl libraries.  
 
 Then copy the ini files into your standard mame dat file directory.
@@ -64,10 +66,12 @@ or use the set49mode.sh bash script to call set49waymode.pl
 Before use you must first run: parse_controls.pl ini_file_directory > 49waymodes.ini to generate all the needed modes.  If you change override.ini you must run it again.
 Copy this new file into your dat file directory and your are all set to run set49mode.
 
-# Note that GPWiz suffers from a quirk where it will not work properly out of the box on linux.  
-# You must do the following to make it register the axis properly.
+### Note that GPWiz suffers from a quirk where it will not work properly out of the box on linux.  
+#### You must do the following to make it register the axis properly.
 
 Create file /etc/modprobe.d/usbhid with the following:
-options usbhid quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
+    options usbhid quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
 
-also add usbhid.quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020 to append line in /boot/syslinux/syslinux.cfg
+also add
+    usbhid.quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
+to append line in /boot/syslinux/syslinux.cfg
