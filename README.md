@@ -1,8 +1,7 @@
 # Set49Way-Linux
 
-This is a set of programs for linux support of the GPWIZ49
-controllers. Also, if I get my hands on a U360 it should be trivial to
-extend support to that as well.
+This is a set of programs for linux support of the GP-Wiz49
+controllers.
 
 I based my support heavily on the ideas of SirPoonga's set49mode
 (although I didn't see a single line of his code since I knew it
@@ -44,7 +43,7 @@ set49mode.sh	  An example bash shell to use for your frontend to set
 		  the 49way mode, run mame, and then reset back to 8-way
 		  for your frontend again.
 		  
-clones.ini        My current clones.ini file for 0.118u3 but you should 
+clones.ini        My current clones.ini file but you should 
                   probably create your own using 
                   mame -listclones > clones.ini
 
