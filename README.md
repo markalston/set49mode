@@ -37,8 +37,6 @@ rotator.pl	  A helper program which uses the stored ini from parse_mamexml.pl ab
 		  
 daphne.sh         My current shell script for calling daphne.
 
-mame229.xml	  The latest mame.xml file if you don't want to generate your own.
-
 joymodes.ini	  The saved output from my last run of parse_mamexml.pl
 
 overrides.ini	  My current overrride file.
