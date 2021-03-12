@@ -1,7 +1,7 @@
-diff --git a/src/emu/inputdev.cpp b/src/emu/inputdev.cpp
+diff --git oldsrc/emu/inputdev.cpp src/emu/inputdev.cpp
 index 600b10f13f5..3441acfa0d7 100644
---- a/src/emu/inputdev.cpp
-+++ b/src/emu/inputdev.cpp
+--- oldsrc/emu/inputdev.cpp
++++ src/emu/inputdev.cpp
 @@ -84,8 +84,8 @@ class input_device_absolute_item : public input_device_item
  //**************************************************************************
  
