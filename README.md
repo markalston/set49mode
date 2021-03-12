@@ -1,77 +1,46 @@
 # Set49Way-Linux
 
-This is a set of programs for linux support of the GPWIZ49
-controllers. Also, if I get my hands on a U360 it should be trivial to
-extend support to that as well.
+This is a set of programs for mame joymap automation 
+controllers and other analog joysticks
 
-I based my support heavily on the ideas of SirPoonga's set49mode
-(although I didn't see a single line of his code since I knew it
-wouldn't work on linux) and have stolen a couple of his ini files for
-my own usage.
-
-The package requires Device::USB and libusb and probably libusb-dev to
-work.
-
-Get them however is best for your distribution.
-If using GroovyArcade do the following:
-
-## Install Yay for aur repository installs
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si
-
-## Install perl Device::USB and Inline for set49way.p
-    yay -S perl-device-usb
-    yay -S perl-inline
-    pacman -S libusb
+The package requires perl with the XML::LibXML library.
 
 ## The package contains several files
 
-parse_controls.pl This program creates the needed ini file for the
-                  set49mode program.  It requires mame_modes.ini, 
-                  clones.ini, overrides.ini and controls.ini.
-                  (Read the file for more info).
+parse_mamexml.pl  This program parses the mame.xml file from either
+		  running mame -listxml or downloading from
+		  https://www.progettosnaps.net/dats/MAME/
+                  and generates output for a joymodes.ini file.
 
-gpwiz49.pm        The perl package which does all the work of talking 
-                  to the GPWIZ49.
-                  (Thanks Randy for the very simple protocol).
+run_mame.sh       An example program that you would have your frontend call 
+                  to run mame and automatically set the joymap or use rotator.
+		  My example also shows how to control daphne and 
+                  set49mode romname
 
-set49mode.pl      The program that you would have your frontend call 
-                  to set the mode. It is called like this: 
-                  set49mode romname inifile jstype
-
-set49mode.sh	  An example bash shell to use for your frontend to set
-		  the 49way mode, run mame, and then reset back to 8-way
-		  for your frontend again.
-		  
-clones.ini        My current clones.ini file for 0.118u3 but you should 
-                  probably create your own using 
-                  mame -listclones > clones.ini
-
-override.ini      An example override.ini file that should be customized.
+joymap.pl         A helper program that takes a rom name and an ini file
+		  (generated using parse_mamexml.pl above), as well as an override
+		  file if desired, to output a proper joymap for mame's -joymap option.
                   The file must exist even if there are not overrides.
+		  
 
-mame_modes.ini    The map file from mame modes to GPWIZ49 DRS Modes
-              .   Probably shouldn't mess with this one.
+rotator.pl	  A helper program which uses the stored ini from parse_mamexml.pl above
+		  and calls the rotator program to set the appropriate mode.
+		  Rotator is a part of the ledspicer programs.
+		  https://github.com/meduzapat/LEDSpicer
+		  https://sourceforge.net/p/ledspicer/wiki/Programs/#rotator
+		  
+daphne.sh         My current shell script for calling daphne.
 
-## Install
+mame229.xml	  The latest mame.xml file if you don't want to generate your own.
 
-To install copy gpwiz49.pm into your perl libraries.  
+joymodes.ini	  The saved output from my last run of parse_mamexml.pl
 
-Then copy the ini files into your standard mame dat file directory.
-
-Then put set49mode into your file path (perhaps /usr/share/games or /usr/local/bin) and change it's ownership to root and make it suid root.
-or use the set49mode.sh bash script to call set49waymode.pl
-
-Before use you must first run: parse_controls.pl ini_file_directory > 49waymodes.ini to generate all the needed modes.  If you change override.ini you must run it again.
-Copy this new file into your dat file directory and your are all set to run set49mode.
+overrides.ini	  My current overrride file.
 
 ### Note that GPWiz suffers from a quirk where it will not work properly out of the box on linux.  
 #### You must do the following to make it register the axis properly.
 
 Create file /etc/modprobe.d/usbhid with the following:
-    options usbhid quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
+options usbhid quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
 
-also add
-    usbhid.quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020
-to append line in /boot/syslinux/syslinux.cfg
+also add usbhid.quirks=0xFAFA:0x0007:0x00000020,0xFAFA:0x0008:0x00000020 to append line in /boot/syslinux/syslinux.cfg
