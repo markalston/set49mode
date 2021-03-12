@@ -1,0 +1,77 @@
+diff --git a/src/emu/inputdev.cpp b/src/emu/inputdev.cpp
+index 600b10f13f5..3441acfa0d7 100644
+--- a/src/emu/inputdev.cpp
++++ b/src/emu/inputdev.cpp
+@@ -84,8 +84,8 @@ class input_device_absolute_item : public input_device_item
+ //**************************************************************************
+ 
+ // standard joystick mappings
+-const char          input_class_joystick::map_8way[] = "7778...4445";
+-const char          input_class_joystick::map_4way_diagonal[] = "4444s8888..444458888.444555888.ss5.222555666.222256666.2222s6666.2222s6666";
++const char          input_class_joystick::map_8way[] = "778..445";
++const char          input_class_joystick::map_4way_diagonal[] = "444s888.444s888.4445888.ss555ss.2225666.222s666.222s666";
+ // const char          input_class_joystick::map_4way_sticky[] = "s8.4s8.44s8.4445";
+ 
+ 
+@@ -101,7 +101,7 @@ joystick_map::joystick_map()
+ 	: m_lastmap(JOYSTICK_MAP_NEUTRAL)
+ {
+ 	// parse the standard 8-way map as default
+-	parse(input_class_joystick::map_8way);
++       parse(input_class_joystick::map_8way);
+ }
+ 
+ 
+@@ -115,20 +115,20 @@ bool joystick_map::parse(const char *mapstring)
+ 	m_origstring = mapstring;
+ 
+ 	// iterate over rows
+-	for (int rownum = 0; rownum < 9; rownum++)
++	for (int rownum = 0; rownum < 7; rownum++)
+ 	{
+ 		// if we're done, copy from another row
+ 		if (*mapstring == 0 || *mapstring == '.')
+ 		{
+-			bool symmetric = (rownum >= 5 && *mapstring == 0);
+-			const u8 *srcrow = &m_map[symmetric ? (8 - rownum) : (rownum - 1)][0];
++			bool symmetric = (rownum >= 4 && *mapstring == 0);
++			const u8 *srcrow = &m_map[symmetric ? (6 - rownum) : (rownum - 1)][0];
+ 
+ 			// if this is row 0, we don't have a source row -- invalid
+ 			if (rownum == 0)
+ 				return false;
+ 
+ 			// copy from the srcrow, applying up/down symmetry if in the bottom half
+-			for (int colnum = 0; colnum < 9; colnum++)
++			for (int colnum = 0; colnum < 7; colnum++)
+ 			{
+ 				u8 val = srcrow[colnum];
+ 				if (symmetric)
+@@ -140,13 +140,13 @@ bool joystick_map::parse(const char *mapstring)
+ 		// otherwise, parse this column
+ 		else
+ 		{
+-			for (int colnum = 0; colnum < 9; colnum++)
++			for (int colnum = 0; colnum < 7; colnum++)
+ 			{
+ 				// if we're at the end of row, copy previous to the middle, then apply left/right symmetry
+ 				if (colnum > 0 && (*mapstring == 0 || *mapstring == '.'))
+ 				{
+-					bool symmetric = (colnum >= 5);
+-					u8 val = m_map[rownum][symmetric ? (8 - colnum) : (colnum - 1)];
++					bool symmetric = (colnum >= 4);
++					u8 val = m_map[rownum][symmetric ? (6 - colnum) : (colnum - 1)];
+ 					if (symmetric)
+ 						val = (val & (JOYSTICK_MAP_UP | JOYSTICK_MAP_DOWN)) | ((val & JOYSTICK_MAP_LEFT) << 1) | ((val & JOYSTICK_MAP_RIGHT) >> 1);
+ 					m_map[rownum][colnum] = val;
+@@ -229,8 +229,8 @@ std::string joystick_map::to_string() const
+ u8 joystick_map::update(s32 xaxisval, s32 yaxisval)
+ {
+ 	// now map the X and Y axes to a 9x9 grid using the raw values
+-	xaxisval = ((xaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
+-	yaxisval = ((yaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
++	xaxisval = ((xaxisval - INPUT_ABSOLUTE_MIN) * 7) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
++	yaxisval = ((yaxisval - INPUT_ABSOLUTE_MIN) * 7) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
+ 	u8 mapval = m_map[yaxisval][xaxisval];
+ 
+ 	// handle stickiness

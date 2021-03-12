@@ -2,9 +2,15 @@
 This is a set of programs for mame joymap automation 
 controllers and other analog joysticks
 
+In addition there is a patch file to modify base mame for 7x7 joymaps.
+
 The package requires perl with the XML::LibXML library.
 
 ##The package contains several files
+
+mame49way.diff	  Patch file for mame to use 7x7 joymaps instead of 9x9.
+		  This makes the joymaps line up naturally with the output
+		  from 49 way joysticks using a controller like the GPWiz49.
 
 parse_mamexml.pl  This program parses the mame.xml file from either
 		  running mame -listxml or downloading from
