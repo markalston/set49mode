@@ -2,7 +2,7 @@
 ROM=$1
 LOGPATH=/home/roms/MAME/logs
 DEBUG=1
-MAME=mame.229-49way
+MAME=mame
 JOYMAP=$(/usr/local/bin/joymap.pl $ROM /home/roms/MAME/ini/joymodes.ini /home/roms/MAME/ini/overrides.ini)
 
 if [ $ROM == 'dragonslair' ] || [ $ROM == 'spaceace' ]

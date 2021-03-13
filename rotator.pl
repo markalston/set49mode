@@ -9,15 +9,17 @@
 #
 #    mark at beernut dot com
 #   
-#    Perl program for automating the usage of rotator.
 #    
 #  Usage: rotator.pl gamerom inifile [overrides]
 #
 #            inifile - full path to your saves joymodes.ini file
+#            overrides - full path to your optional overrides file
 #
-#   This program looks up the given game rom in the inifile 
+#   This program looks up the given game rom in the inifile (and overrides)
 #   and uses rotator to set your controllers to the correct mode.
-#  
+#
+#   If called with no arguments or no matching rom is found the joysticks
+#   are set to the default 8 way mode.
 #
 #    Copyright (c) 2021   Mark Alston
 ###
@@ -47,6 +49,7 @@ my $inifile = '/dev/null';
 my $overrides = '/dev/null';
 
 my $rom = $ARGV[0];
+
 
 if ($#ARGV > 0){
     $inifile = $ARGV[1];    
