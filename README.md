@@ -14,7 +14,7 @@ The package requires perl with the XML::LibXML library.
 | parse_mamexml.pl | This program parses the mame.xml file from either running mame -listxml or downloading from https://www.progettosnaps.net/dats/MAME/ and generates output for a joymodes.ini file. |
 | run_mame.sh | My current linux bash script that I use to run mame and automatically set the joymap. My script also does log rotation. | 
 | joymap.pl | A helper program that takes a rom name and an ini file (generated using parse_mamexml.pl above), as well as an override file if desired, to output a proper joymap for mame's -joymap option. |
-| rotator.pl | A helper program which uses the stored ini from parse_mamexml.pl above and calls the rotator program to set the appropriate mode. Rotator is a part of the ledspicer programs. https://github.com/meduzapat/LEDSpicer https://sourceforge.net/p/ledspicer/wiki/Programs/#rotator |
+| rotator.pl | A helper program which uses the stored ini from parse_mamexml.pl above and calls the rotator program to set the appropriate mode. Rotator is a part of the ledspicer programs. I just learned that if you are using the full ledspicer setup then emitter can already automate this without any help (ex: emitter LoadProfileByEmulator galaga arcade) https://github.com/meduzapat/LEDSpicer https://sourceforge.net/p/ledspicer/wiki/Programs/#rotator |
 | daphne.sh | My current bash script for calling daphne. |
 | joymodes.ini	| The saved output from my last run of parse_mamexml.pl |
 | overrides.ini	|  My current overrride file. |
