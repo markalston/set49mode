@@ -3,7 +3,13 @@ ROM=$1
 LOGPATH=/home/roms/MAME/logs
 DEBUG=1
 MAME=mame
+CTRLR=''
 JOYMAP=$(/usr/local/bin/joymap.pl $ROM /home/roms/MAME/ini/joymodes.ini /home/roms/MAME/ini/overrides.ini)
+
+if grep -Fxq $ROM /home/roms/MAME/ini/alternating.ini
+then
+    CTRLR='-ctrlr alternating'
+fi
 
 if [ $ROM == 'dragonslair' ] || [ $ROM == 'spaceace' ]
 then
@@ -35,9 +41,9 @@ gzip $LOGPATH/$ROM-0.log
 
 if [ $DEBUG -eq 1 ]
 then
-   $MAME -noskip_gameinfo -v $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
+   $MAME -noskip_gameinfo -v $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
 else
-    $MAME $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
+    $MAME $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
 fi
 
 if [ $ROM == 'qbert' ] 
