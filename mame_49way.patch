@@ -1,5 +1,5 @@
 diff --git oldsrc/emu/inputdev.cpp src/emu/inputdev.cpp
-index 600b10f13f5..c64a8e035c8 100644
+index 600b10f13f5..3fd134d38c5 100644
 --- oldsrc/emu/inputdev.cpp
 +++ src/emu/inputdev.cpp
 @@ -84,8 +84,8 @@ public:
@@ -11,15 +11,6 @@ index 600b10f13f5..c64a8e035c8 100644
 +const char          input_class_joystick::map_8way[] = "778..445";
 +const char          input_class_joystick::map_4way_diagonal[] = "444s888.444s888.4445888.ss555ss.2225666.222s666.222s666";
  // const char          input_class_joystick::map_4way_sticky[] = "s8.4s8.44s8.4445";
- 
- 
-@@ -101,7 +101,7 @@ joystick_map::joystick_map()
- 	: m_lastmap(JOYSTICK_MAP_NEUTRAL)
- {
- 	// parse the standard 8-way map as default
--	parse(input_class_joystick::map_8way);
-+       parse(input_class_joystick::map_8way);
- }
  
  
 @@ -113,22 +113,21 @@ bool joystick_map::parse(const char *mapstring)
@@ -79,16 +70,6 @@ index 600b10f13f5..c64a8e035c8 100644
  	u8 mapval = m_map[yaxisval][xaxisval];
  
  	// handle stickiness
-@@ -415,8 +414,7 @@ input_device_joystick::input_device_joystick(input_manager &manager, const char
- 	// get the default joystick map
- 	const char *mapstring = machine().options().joystick_map();
- 	if (mapstring[0] == 0 || strcmp(mapstring, "auto") == 0)
--		mapstring = input_class_joystick::map_8way;
--
-+	    mapstring = input_class_joystick::map_8way;
- 	// parse it
- 	if (!m_joymap.parse(mapstring))
- 	{
 diff --git oldsrc/emu/inputdev.h src/emu/inputdev.h
 index 1c8e12c4b38..54b53e17c0e 100644
 --- oldsrc/emu/inputdev.h
