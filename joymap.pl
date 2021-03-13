@@ -74,6 +74,10 @@ $joymap{'analog'} = 'mouse';
 #   49 way stick joymaps for use only with mame patched for 7x7 maps
 #
 #    Do not use these maps with standard mame.
+#    Seriously, if you use these maps without patching mame your experience 
+#    will be very bad.
+#
+#    Comment these out and uncomment the ones below for standard mame.
 #
 ###############################################################################
 #
@@ -98,7 +102,7 @@ $joymap{'8'} = '778..445';
 #
 #   Unless you have patched mame for 7x7 maps, these are the ones you want uncommented.
 #
-#    Leave commented out for patched mame.
+#    If you have patched mame for 7x7 leave these commented out.
 #    
 #
 ###############################################################################
@@ -109,7 +113,7 @@ $joymap{'8'} = '778..445';
 #$joymap{'vertical2 loose'} = '8.8.8.s.5.s.2.2.2.';
 #$joymap{'3 (half4)'} = 's8.4s8.44s8.4445';
 #$joymap{'4'} = 's8.4s8.44s8.4445';
-#$joymap{'4x'} = '4444s8888.444408888.444458888.444555888.ss5.222555666.222256666.222206666.222206666';
+#$joymap{'4x'} = '4444s8888.444458888.444458888.444555888.ss5.222555666.222256666.222256666.222256666';
 ## 4 way mode with tiny diagonals.
 #$joymap{'4d'} = '78.4s8.44s8.4445';
 #$joymap{'5 (half8)'} = '7778..4445'; 
