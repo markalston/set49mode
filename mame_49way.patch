@@ -1,8 +1,8 @@
 diff --git oldsrc/emu/inputdev.cpp src/emu/inputdev.cpp
-index 600b10f13f5..3441acfa0d7 100644
+index 600b10f13f5..c64a8e035c8 100644
 --- oldsrc/emu/inputdev.cpp
 +++ src/emu/inputdev.cpp
-@@ -84,8 +84,8 @@ class input_device_absolute_item : public input_device_item
+@@ -84,8 +84,8 @@ public:
  //**************************************************************************
  
  // standard joystick mappings
@@ -22,9 +22,11 @@ index 600b10f13f5..3441acfa0d7 100644
  }
  
  
-@@ -115,20 +115,20 @@ bool joystick_map::parse(const char *mapstring)
+@@ -113,22 +113,21 @@ bool joystick_map::parse(const char *mapstring)
+ {
+ 	// save a copy of the original string
  	m_origstring = mapstring;
- 
+-
  	// iterate over rows
 -	for (int rownum = 0; rownum < 9; rownum++)
 +	for (int rownum = 0; rownum < 7; rownum++)
@@ -47,7 +49,7 @@ index 600b10f13f5..3441acfa0d7 100644
  			{
  				u8 val = srcrow[colnum];
  				if (symmetric)
-@@ -140,13 +140,13 @@ bool joystick_map::parse(const char *mapstring)
+@@ -140,13 +139,13 @@ bool joystick_map::parse(const char *mapstring)
  		// otherwise, parse this column
  		else
  		{
@@ -64,14 +66,39 @@ index 600b10f13f5..3441acfa0d7 100644
  					if (symmetric)
  						val = (val & (JOYSTICK_MAP_UP | JOYSTICK_MAP_DOWN)) | ((val & JOYSTICK_MAP_LEFT) << 1) | ((val & JOYSTICK_MAP_RIGHT) >> 1);
  					m_map[rownum][colnum] = val;
-@@ -229,8 +229,8 @@ std::string joystick_map::to_string() const
+@@ -228,9 +227,9 @@ std::string joystick_map::to_string() const
+ 
  u8 joystick_map::update(s32 xaxisval, s32 yaxisval)
  {
- 	// now map the X and Y axes to a 9x9 grid using the raw values
+-	// now map the X and Y axes to a 9x9 grid using the raw values
 -	xaxisval = ((xaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
 -	yaxisval = ((yaxisval - INPUT_ABSOLUTE_MIN) * 9) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
++	// now map the X and Y axes to a 7x7 grid using the raw values
 +	xaxisval = ((xaxisval - INPUT_ABSOLUTE_MIN) * 7) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
 +	yaxisval = ((yaxisval - INPUT_ABSOLUTE_MIN) * 7) / (INPUT_ABSOLUTE_MAX - INPUT_ABSOLUTE_MIN + 1);
  	u8 mapval = m_map[yaxisval][xaxisval];
  
  	// handle stickiness
+@@ -415,8 +414,7 @@ input_device_joystick::input_device_joystick(input_manager &manager, const char
+ 	// get the default joystick map
+ 	const char *mapstring = machine().options().joystick_map();
+ 	if (mapstring[0] == 0 || strcmp(mapstring, "auto") == 0)
+-		mapstring = input_class_joystick::map_8way;
+-
++	    mapstring = input_class_joystick::map_8way;
+ 	// parse it
+ 	if (!m_joymap.parse(mapstring))
+ 	{
+diff --git oldsrc/emu/inputdev.h src/emu/inputdev.h
+index 1c8e12c4b38..54b53e17c0e 100644
+--- oldsrc/emu/inputdev.h
++++ src/emu/inputdev.h
+@@ -76,7 +76,7 @@ private:
+ 	}
+ 
+ 	// internal state
+-	u8                      m_map[9][9];            // 9x9 grid
++	u8                      m_map[7][7];            // 7x7 grid
+ 	u8                      m_lastmap;              // last value returned (for sticky tracking)
+ 	std::string             m_origstring;           // originally parsed string
+ };
