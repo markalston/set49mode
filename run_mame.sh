@@ -7,7 +7,7 @@ JOYMAP=$(/usr/local/bin/joymap.pl $ROM /home/roms/MAME/ini/joymodes.ini /home/ro
 
 if [ $ROM == 'dragonslair' ] || [ $ROM == 'spaceace' ]
 then
-    /usr/local/bin/rotator.pl 4
+    /usr/local/bin/rotator.pl 8
     /usr/local/bin/daphne.sh $ROM
     /usr/local/bin/rotator.pl 49    
     exit
@@ -35,7 +35,7 @@ gzip $LOGPATH/$ROM-0.log
 
 if [ $DEBUG -eq 1 ]
 then
-   $MAME -v $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
+   $MAME -noskip_gameinfo -v $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
 else
     $MAME $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
 fi
