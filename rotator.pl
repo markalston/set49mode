@@ -44,6 +44,8 @@ use strict;
 $ENV{PATH} = "/sbin:/usr/local/bin";
 
 my $inifile = '/dev/null';
+my $overrides = '/dev/null';
+
 my $rom = $ARGV[0];
 
 if ($#ARGV > 0){
@@ -89,7 +91,7 @@ if (exists $modes{$rom}) {
 
     open(FD, "$overrides");
     while (<FD>) {
-	if ($_ =~ s/^$game=(.*)/$1/) {
+	if ($_ =~ s/^$rom=(.*)/$1/) {
 	    $joymode = $_;
 	    $joymode =~ s/\s+$//;
 	}
