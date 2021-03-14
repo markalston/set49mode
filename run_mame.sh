@@ -1,11 +1,15 @@
 #!/bin/bash
 ROM=$1
 LOGPATH=/home/roms/MAME/logs
-DEBUG=1
+DEBUG=0
 MAME=mame
-CTRLR=''
 JOYMAP=$(/usr/local/bin/joymap.pl $ROM /home/roms/MAME/ini/joymodes.ini /home/roms/MAME/ini/overrides.ini)
+CTRLR=''
 
+# Check list of game with alternating players.
+# If match then switch to ctrlr file which allows each player to
+# use the joystick in front of them instead of switching positions.
+#
 if grep -Fxq $ROM /home/roms/MAME/ini/alternating.ini
 then
     CTRLR='-ctrlr alternating'
@@ -28,11 +32,6 @@ else
     JOYMAPCMD="-joymap $JOYMAP"
 fi
 
-if [ $ROM == 'qbert' ] 
-then
-    ledspicerd &
-fi
-
 #  Rotate and keep last 8 logs
 #
 for i in {8..0}; do mv $LOGPATH/$ROM-$i.log.gz $LOGPATH/$ROM-$((i+1)).log.gz; done
@@ -43,12 +42,7 @@ if [ $DEBUG -eq 1 ]
 then
    $MAME -noskip_gameinfo -v $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
 else
-    $MAME $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
-fi
-
-if [ $ROM == 'qbert' ] 
-then
-    killall ledspicerd
+    $MAME $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log    
 fi
 
 /usr/local/bin/rotator.pl 49
