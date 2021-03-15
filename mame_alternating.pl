@@ -57,16 +57,28 @@ my $dir = $ARGV[0];
 
 sub create_gamelist{
     my $game="";
+    my $output="";
     open(FD, "$dir/controls.ini");
     while(<FD>){
 	if ( $_ =~ s/\[(.*)\]/$1/ )  {
+	    if ($output ne "" ) {
+		print $output
+	    }
 	    $game = $_;
 	    $game =~ s/\s+$//;
+	    $output = "";
 	}
-	if ($_ =~ /alternating=1/ ){
-	    print "$game\n";
+	if ($_ =~ /alternating=1/){
+	    $output = "$game\n";
+	}
+	if ($_ =~ /JOYSTICKRIGHT/){
+	    $output = "";
 	}
     }
     close(FD);
+    if ($output ne "" ) {
+	print $output
+    }
+    
     exit;
 }
