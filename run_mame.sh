@@ -6,6 +6,14 @@ MAME=mame
 JOYMAP=$(/usr/local/bin/joymap.pl $ROM /home/roms/MAME/ini/joymodes.ini /home/roms/MAME/ini/overrides.ini)
 CTRLR=''
 
+if [ $ROM == 'dragonslair' ] || [ $ROM == 'spaceace' ]
+then
+    /usr/local/bin/rotator.pl 8
+    /usr/local/bin/daphne.sh $ROM
+    /usr/local/bin/rotator.pl 49    
+    exit
+fi
+
 # Check list of game with alternating players.
 # If match then switch to ctrlr file which allows each player to
 # use the joystick in front of them instead of switching positions.
@@ -15,12 +23,9 @@ then
     CTRLR='-ctrlr alternating'
 fi
 
-if [ $ROM == 'dragonslair' ] || [ $ROM == 'spaceace' ]
-then
-    /usr/local/bin/rotator.pl 8
-    /usr/local/bin/daphne.sh $ROM
-    /usr/local/bin/rotator.pl 49    
-    exit
+# If Ledspicerd isn't running run it.
+if [! pgrep -x ledspicerd > /dev/null]
+   ledspicerd &
 fi
 
 if [ $JOYMAP == '49' ] || [ $JOYMAP == 'mouse' ] || [$JOYMAP == 'analog']
@@ -38,6 +43,7 @@ for i in {8..0}; do mv $LOGPATH/$ROM-$i.log.gz $LOGPATH/$ROM-$((i+1)).log.gz; do
 mv $LOGPATH/$ROM.log $LOGPATH/$ROM-0.log
 gzip $LOGPATH/$ROM-0.log
 
+   
 if [ $DEBUG -eq 1 ]
 then
    $MAME -noskip_gameinfo -v $CTRLR $JOYMAPCMD $ROM 2>&1 > $LOGPATH/$ROM.log
