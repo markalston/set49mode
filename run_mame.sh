@@ -24,9 +24,9 @@ then
 fi
 
 # If Ledspicerd isn't running run it.
-if [! pgrep -x ledspicerd > /dev/null]
+pgrep -x ledspicerd > /dev/null || {
    ledspicerd &
-fi
+}
 
 if [ $JOYMAP == '49' ] || [ $JOYMAP == 'mouse' ] || [$JOYMAP == 'analog']
 then
