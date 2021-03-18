@@ -59,19 +59,27 @@ sub create_gamelist{
     my $game="";
     my $output="";
     open(FD, "$dir/controls.ini");
-    while(<FD>){
-	if ( $_ =~ s/\[(.*)\]/$1/ )  {
+    while(my $controls_line=<FD>){
+	if ( $controls_line =~ s/\[(.*)\]/$1/ )  {
 	    if ($output ne "" ) {
 		print $output
 	    }
-	    $game = $_;
+	    $game = $controls_line;
 	    $game =~ s/\s+$//;
 	    $output = "";
 	}
-	if ($_ =~ /numPlayers=[2-4]/){
+	if ($controls_line =~ /numPlayers=[2-4]/){
 	    $output = "$game\n";
+	    open(FD2, "$dir/clones.ini");	    
+	    while (my $clones_line=<FD2>){
+		my @clones = split (' ', $clones_line);
+		if ( $clones[1] eq $game ) {
+		    $output .= $clones[0] . "\n";
+		}
+	    }
+	    close(FD2);
 	}
-	if ($_ =~ /alternating=1/){
+	if ($controls_line =~ /alternating=1/){
 	    $output = "";
 	}
     }
